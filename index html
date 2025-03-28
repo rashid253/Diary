@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Digital Homework Diary</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="manifest" href="manifest.json" />
+</head>
+<body>
+  <div class="container">
+    <h1>Digital Homework Diary</h1>
+    <input type="file" id="imageUpload" accept="image/*" />
+    <button onclick="processImage()">Extract Homework</button>
+    <div id="output"></div>
+    <button onclick="sendToWhatsApp()">Send to WhatsApp</button>
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/tesseract.js/2.1.0/tesseract.min.js"></script>
+  <script src="script.js"></script>
+  <script>
+    // Register service worker for PWA features
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js')
+          .then(reg => console.log('Service Worker registered with scope:', reg.scope))
+          .catch(err => console.error('Service Worker registration failed:', err));
+      });
+    }
+  </script>
+</body>
+</html>
