@@ -10,11 +10,55 @@
 <body>
   <div class="container">
     <h1>Digital Homework Diary</h1>
+    <!-- Image upload for diary capture -->
     <input type="file" id="imageUpload" accept="image/*" />
     <button onclick="processImage()">Extract Homework</button>
-    <div id="output"></div>
-    <button onclick="sendToWhatsApp()">Send to WhatsApp</button>
+    
+    <!-- Form for manual data entry (for verification & correction) -->
+    <div id="reviewSection" class="hidden">
+      <h2>Review & Edit Homework</h2>
+      <form id="diaryForm">
+        <label>Date:</label>
+        <input type="date" id="diaryDate" required /><br>
+        <label>School Name:</label>
+        <input type="text" id="schoolName" placeholder="Enter School Name" required /><br>
+        <label>Class:</label>
+        <input type="text" id="className" placeholder="Enter Class (e.g., 5th-A)" required /><br>
+        <label>Student Name:</label>
+        <input type="text" id="studentName" placeholder="Enter Student Name" required /><br>
+        
+        <!-- Subject Homework fields -->
+        <h3>Homework Details</h3>
+        <label>Urdu:</label>
+        <textarea id="urduHomework" placeholder="Urdu Homework"></textarea><br>
+        <label>English:</label>
+        <textarea id="englishHomework" placeholder="English Homework"></textarea><br>
+        <label>Math:</label>
+        <textarea id="mathHomework" placeholder="Math Homework"></textarea><br>
+        <label>Science:</label>
+        <textarea id="scienceHomework" placeholder="Science Homework"></textarea><br>
+        <label>Social Studies:</label>
+        <textarea id="socialHomework" placeholder="Social Studies Homework"></textarea><br>
+        
+        <label>Teacher's Note:</label>
+        <textarea id="teacherNote" placeholder="Any additional note"></textarea><br>
+        <label>Important Announcements:</label>
+        <textarea id="announcements" placeholder="Announcements"></textarea><br>
+        
+        <button type="button" onclick="updatePreview()">Update Preview</button>
+      </form>
+    </div>
+    
+    <!-- Preview of the final digital diary -->
+    <div id="previewSection" class="hidden">
+      <h2>Diary Preview</h2>
+      <div id="previewContent"></div>
+      <button onclick="window.print()">Print / Save PDF</button>
+      <button onclick="sendToWhatsApp()">Send to WhatsApp</button>
+    </div>
   </div>
+  
+  <!-- Tesseract.js for OCR -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/tesseract.js/2.1.0/tesseract.min.js"></script>
   <script src="script.js"></script>
   <script>
