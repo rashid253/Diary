@@ -25,11 +25,11 @@
       <button id="scanButton" class="hidden" onclick="scanImage()">Scan Image</button>
     </section>
     
-    <!-- OCR Dialog: Floating overlay showing extracted text with a Close button -->
+    <!-- OCR Dialog: Floating overlay displaying extracted text -->
     <div id="ocrDialog" class="ocr-dialog hidden">
       <div class="ocr-content">
         <h3>Extracted Text</h3>
-        <div id="extractedText">[Extracted text will appear here]</div>
+        <div id="extractedText">Processing...</div>
         <button onclick="closeOCRDialog()">Close</button>
       </div>
     </div>
@@ -93,7 +93,7 @@
       </form>
     </section>
     
-    <!-- Preview & Output Section (Traditional Diary Style) -->
+    <!-- Preview & Output Section -->
     <section class="preview-section">
       <h2>Diary Preview (Traditional Style)</h2>
       <div id="previewContent"></div>
@@ -106,7 +106,6 @@
   
   <!-- Include jsPDF for PDF generation -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-  <!-- We now use a dummy OCR function instead of Tesseract.js -->
   <script src="script.js"></script>
   <script>
     // Register service worker for PWA support
