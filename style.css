@@ -1,70 +1,187 @@
-body {
-  font-family: Arial, sans-serif;
-  background-color: #f4f4f4;
+/* Reset */
+* {
   margin: 0;
   padding: 0;
-  text-align: center;
+  box-sizing: border-box;
+}
+
+/* Body & Container */
+body {
+  font-family: Arial, sans-serif;
+  background: linear-gradient(to right, #6a11cb, #2575fc);
+  color: #333;
+  padding: 20px;
 }
 
 .container {
+  background: #fff;
   max-width: 900px;
   margin: 20px auto;
-  background: white;
-  padding: 20px;
+  padding: 30px;
   border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
 
+/* Headers */
 header h1 {
-  background: #007bff;
-  color: white;
-  padding: 15px;
-  border-radius: 5px;
+  text-align: center;
+  font-size: 2.5em;
+  margin-bottom: 20px;
+  color: #444;
 }
 
-.upload-section, .diary-form-section, .interaction-section, .preview-section {
-  margin: 20px 0;
+h2, h3 {
+  color: #444;
+  margin-bottom: 15px;
 }
 
-button {
-  background: #007bff;
-  color: white;
+/* Upload Section */
+.upload-section {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.upload-section input[type="file"] {
+  margin-bottom: 15px;
+}
+
+/* OCR Preview Section */
+.ocr-preview-section {
+  background: #fdfdfd;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 30px;
+}
+
+.ocr-preview-section.hidden {
+  display: none;
+}
+
+.preview-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: space-around;
+  margin-bottom: 15px;
+}
+
+.image-preview, .text-preview {
+  flex: 1;
+  min-width: 280px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
   padding: 10px;
-  border: none;
-  cursor: pointer;
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.image-preview img {
+  max-width: 100%;
+  border-radius: 6px;
+}
+
+.text-preview {
+  position: relative;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+/* Input Section (Standard Form) */
+.input-section {
+  margin-bottom: 30px;
+  padding: 15px;
+  background: #f7f7f7;
+  border-radius: 8px;
+}
+
+.input-section form label {
+  display: block;
+  font-weight: bold;
   margin-top: 10px;
-  border-radius: 5px;
 }
 
-button:hover {
-  background: #0056b3;
-}
-
-input, textarea {
+.input-section form input,
+.input-section form textarea {
   width: 100%;
   padding: 10px;
   margin-top: 5px;
   border: 1px solid #ccc;
-  border-radius: 5px;
+  border-radius: 6px;
+  font-size: 1em;
 }
 
-textarea {
-  resize: none;
-  height: 80px;
-}
-
-.diary-table {
-  width: 100%;
-  margin-top: 20px;
-  border-collapse: collapse;
-}
-
-.diary-table th, .diary-table td {
-  border: 1px solid #ddd;
-  padding: 10px;
-  text-align: left;
-}
-
-.extra-fields .field {
+.input-section form button {
   margin-top: 15px;
+  background-color: #2575fc;
+  color: #fff;
+  border: none;
+  padding: 12px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.input-section form button:hover {
+  background-color: #1a5bb8;
+}
+
+/* Preview Section (Traditional Diary Style) */
+.preview-section {
+  margin-top: 40px;
+  padding: 20px;
+  background: #fdfdfd;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+}
+
+#previewContent {
+  text-align: left;
+  margin-top: 15px;
+}
+
+.diary-output {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 15px;
+}
+
+.diary-output th,
+.diary-output td {
+  border: 1px solid #ccc;
+  padding: 12px;
+}
+
+.diary-output th {
+  background: #f2f2f2;
+  width: 35%;
+}
+
+/* Preview Buttons */
+.preview-buttons {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.preview-buttons button {
+  background-color: #2575fc;
+  color: #fff;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  margin: 5px;
+}
+
+.preview-buttons button:hover {
+  background-color: #1a5bb8;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .preview-wrapper {
+    flex-direction: column;
+  }
+  .container {
+    padding: 20px;
+  }
 }
