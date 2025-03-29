@@ -1,23 +1,19 @@
-/* Reset */
+/* Reset & Base Styles */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
-
-/* Body & Container */
 body {
   font-family: Arial, sans-serif;
   background: #f4f4f4; /* Neutral background */
   color: #333;
   padding: 10px;
-  margin: 0;
 }
-
 .container {
   background: #fff;
   width: 100%;
-  max-width: 100%;
+  max-width: 900px;
   margin: 0 auto;
   padding: 20px;
   border-radius: 8px;
@@ -148,23 +144,7 @@ header h1 {
   cursor: pointer;
 }
 
-/* Traditional Diary Table Layout */
-.diary-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 15px;
-}
-.diary-table th, .diary-table td {
-  border: 1px solid #ddd;
-  padding: 12px;
-  vertical-align: top;
-}
-.diary-table th {
-  background: #f2f2f2;
-  width: 35%;
-}
-
-/* Preview Section */
+/* Preview Section (Standard Output Style) */
 .preview-section {
   margin-top: 30px;
   padding: 20px;
@@ -175,6 +155,7 @@ header h1 {
 #previewContent {
   text-align: left;
   margin-top: 15px;
+  line-height: 1.6;
 }
 .preview-buttons {
   text-align: center;
