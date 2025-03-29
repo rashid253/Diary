@@ -9,81 +9,108 @@
 </head>
 <body>
   <div class="container">
-    <h1>Digital Homework Diary</h1>
+    <header>
+      <h1>Digital Homework Diary</h1>
+    </header>
     
-    <!-- Image Capture & OCR Section -->
-    <section id="ocrSection">
-      <h2>Upload Diary Image (for OCR)</h2>
+    <!-- Image Upload & OCR Section -->
+    <section class="upload-section">
+      <h2>Upload Diary Image for OCR</h2>
       <input type="file" id="imageUpload" accept="image/*" />
       <button onclick="processImage()">Scan & Auto-Fill</button>
     </section>
     
-    <!-- Editable Diary Form -->
-    <section id="diaryFormSection">
-      <h2>Edit Diary Details</h2>
+    <!-- Diary Form Section -->
+    <section class="diary-form-section">
       <form id="diaryForm">
-        <label>Date:</label>
-        <input type="date" id="diaryDate" required />
+        <div class="form-header">
+          <div class="field">
+            <label for="diaryDate">Date</label>
+            <input type="date" id="diaryDate" required />
+          </div>
+          <div class="field">
+            <label for="schoolName">School Name</label>
+            <input type="text" id="schoolName" placeholder="Enter School Name" required />
+          </div>
+          <div class="field">
+            <label for="className">Class</label>
+            <input type="text" id="className" placeholder="e.g., 5th-A" required />
+          </div>
+          <div class="field">
+            <label for="studentName">Student Name</label>
+            <input type="text" id="studentName" placeholder="Enter Student Name" required />
+          </div>
+        </div>
         
-        <label>School Name:</label>
-        <input type="text" id="schoolName" placeholder="Enter School Name" required />
+        <!-- Diary Table: Left side subject, right side field -->
+        <table class="diary-table">
+          <tr>
+            <th>Subject</th>
+            <th>Homework Details</th>
+          </tr>
+          <tr>
+            <td>Urdu</td>
+            <td><textarea id="urduHomework" placeholder="Enter Urdu Homework"></textarea></td>
+          </tr>
+          <tr>
+            <td>English</td>
+            <td><textarea id="englishHomework" placeholder="Enter English Homework"></textarea></td>
+          </tr>
+          <tr>
+            <td>Math</td>
+            <td><textarea id="mathHomework" placeholder="Enter Math Homework"></textarea></td>
+          </tr>
+          <tr>
+            <td>Science</td>
+            <td><textarea id="scienceHomework" placeholder="Enter Science Homework"></textarea></td>
+          </tr>
+          <tr>
+            <td>Social Studies</td>
+            <td><textarea id="socialHomework" placeholder="Enter Social Studies Homework"></textarea></td>
+          </tr>
+        </table>
         
-        <label>Class:</label>
-        <input type="text" id="className" placeholder="Enter Class (e.g., 5th-A)" required />
-        
-        <label>Student Name:</label>
-        <input type="text" id="studentName" placeholder="Enter Student Name" required />
-        
-        <h3>Homework Details</h3>
-        <label>Urdu:</label>
-        <textarea id="urduHomework" placeholder="Urdu Homework"></textarea>
-        
-        <label>English:</label>
-        <textarea id="englishHomework" placeholder="English Homework"></textarea>
-        
-        <label>Math:</label>
-        <textarea id="mathHomework" placeholder="Math Homework"></textarea>
-        
-        <label>Science:</label>
-        <textarea id="scienceHomework" placeholder="Science Homework"></textarea>
-        
-        <label>Social Studies:</label>
-        <textarea id="socialHomework" placeholder="Social Studies Homework"></textarea>
-        
-        <label>Teacher's Note:</label>
-        <textarea id="teacherNote" placeholder="Any additional note"></textarea>
-        
-        <label>Alerts/Announcements:</label>
-        <textarea id="announcements" placeholder="Alerts or Announcements"></textarea>
+        <div class="extra-fields">
+          <div class="field">
+            <label for="teacherNote">Teacher's Note</label>
+            <textarea id="teacherNote" placeholder="Enter Teacher's Note"></textarea>
+          </div>
+          <div class="field">
+            <label for="announcements">Announcements/Alerts</label>
+            <textarea id="announcements" placeholder="Enter Announcements/Alerts"></textarea>
+          </div>
+        </div>
       </form>
     </section>
     
     <!-- Parent Interaction Section -->
-    <section id="parentInteraction">
+    <section class="interaction-section">
       <h2>Parent Interaction</h2>
-      <div id="chatBox">
-        <!-- Chat messages will appear here -->
+      <div id="chatBox"></div>
+      <div class="chat-input">
+        <input type="text" id="chatInput" placeholder="Type message for parents..." />
+        <button id="sendChatBtn" onclick="sendChat()">Send</button>
       </div>
-      <input type="text" id="chatInput" placeholder="Type a message for parents..." />
-      <button onclick="sendChat()">Send Message</button>
     </section>
     
     <!-- Preview & Output Section -->
-    <section id="previewSection">
+    <section class="preview-section">
       <h2>Diary Preview</h2>
       <div id="previewContent"></div>
-      <button onclick="generatePDF()">Submit Diary (Generate PDF)</button>
-      <button onclick="shareWhatsApp()">Share via WhatsApp</button>
+      <div class="preview-buttons">
+        <button onclick="updatePreview()">Update Preview</button>
+        <button onclick="generatePDF()">Submit & Generate PDF</button>
+        <button onclick="shareWhatsApp()">Share via WhatsApp</button>
+      </div>
     </section>
   </div>
   
-  <!-- Include Tesseract.js for OCR -->
+  <!-- Include Tesseract.js for OCR and jsPDF for PDF generation -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/tesseract.js/2.1.0/tesseract.min.js"></script>
-  <!-- Include jsPDF for PDF generation -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script src="script.js"></script>
   <script>
-    // Register service worker for PWA features
+    // Register service worker for PWA
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
         navigator.serviceWorker.register('./sw.js')
