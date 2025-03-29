@@ -9,47 +9,48 @@
 body {
   font-family: 'Arial', sans-serif;
   background: linear-gradient(to right, #6a11cb, #2575fc);
-  padding: 15px;
+  padding: 20px;
   color: #333;
 }
 
 .container {
   background: #fff;
   max-width: 900px;
-  margin: 20px auto;
+  margin: 30px auto;
   border-radius: 10px;
-  padding: 25px;
+  padding: 40px;
   box-shadow: 0 4px 15px rgba(0,0,0,0.2);
 }
 
 /* Headers */
 header h1 {
   text-align: center;
-  font-size: 2.5em;
-  margin-bottom: 20px;
+  font-size: 2.8em;
+  margin-bottom: 25px;
   color: #444;
+}
+
+h2, h3 {
+  color: #444;
+  margin-bottom: 20px;
 }
 
 /* Section Styling */
 section {
-  margin-bottom: 30px;
-  padding: 15px;
+  margin-bottom: 40px;
+  padding: 20px;
   background: #f9f9f9;
   border-radius: 8px;
-}
-
-h2 {
-  color: #444;
-  margin-bottom: 15px;
 }
 
 /* Upload Section */
 .upload-section {
   text-align: center;
+  margin-bottom: 30px;
 }
 
 .upload-section input[type="file"] {
-  margin-bottom: 10px;
+  margin-bottom: 15px;
 }
 
 /* Form Header */
@@ -57,28 +58,31 @@ h2 {
   display: flex;
   flex-wrap: wrap;
   gap: 20px;
-  margin-bottom: 20px;
+  margin-bottom: 30px;
 }
 
 .field {
   flex: 1;
-  min-width: 200px;
+  min-width: 220px;
+  margin-bottom: 20px;
 }
 
 .field label {
   display: block;
   font-weight: bold;
-  margin-bottom: 5px;
+  margin-bottom: 8px;
 }
 
 .field input[type="text"],
 .field input[type="date"],
 .field textarea {
   width: 100%;
-  padding: 10px;
+  padding: 14px;
   border: 1px solid #ccc;
-  border-radius: 6px;
+  border-radius: 8px;
+  font-size: 1em;
   transition: border-color 0.3s;
+  line-height: 1.6;
 }
 
 .field input:focus,
@@ -87,59 +91,60 @@ h2 {
   outline: none;
 }
 
-/* Diary Table */
+/* Diary Table Layout */
 .diary-table {
   width: 100%;
   border-collapse: collapse;
-  margin-bottom: 20px;
+  margin-bottom: 25px;
 }
 
 .diary-table th,
 .diary-table td {
   border: 1px solid #ddd;
-  padding: 12px;
+  padding: 16px;
   vertical-align: top;
 }
 
 .diary-table th {
   background: #f2f2f2;
-  width: 30%;
+  width: 35%;
+  text-align: left;
 }
 
 /* Extra Fields */
 .extra-fields .field {
-  margin-bottom: 15px;
+  margin-bottom: 25px;
 }
 
 /* Parent Interaction */
 .interaction-section #chatBox {
   border: 1px solid #ccc;
-  border-radius: 6px;
-  padding: 10px;
-  height: 150px;
+  border-radius: 8px;
+  padding: 15px;
+  height: 200px;
   overflow-y: auto;
   background: #fff;
-  margin-bottom: 10px;
+  margin-bottom: 15px;
 }
 
 .chat-input {
   display: flex;
-  gap: 10px;
+  gap: 15px;
 }
 
 .chat-input input {
   flex: 1;
-  padding: 10px;
+  padding: 12px;
   border: 1px solid #ccc;
-  border-radius: 6px;
+  border-radius: 8px;
 }
 
 #sendChatBtn {
-  padding: 10px 15px;
+  padding: 12px 18px;
   background-color: #2575fc;
   color: #fff;
   border: none;
-  border-radius: 6px;
+  border-radius: 8px;
   cursor: pointer;
 }
 
@@ -147,15 +152,16 @@ h2 {
 .preview-section #previewContent {
   background: #fff;
   border: 1px solid #ddd;
-  padding: 20px;
-  border-radius: 6px;
-  max-height: 300px;
+  padding: 25px;
+  border-radius: 8px;
+  max-height: 350px;
   overflow-y: auto;
   text-align: left;
+  font-size: 1.1em;
 }
 
 .preview-buttons {
-  margin-top: 15px;
+  margin-top: 20px;
   text-align: center;
 }
 
@@ -164,12 +170,12 @@ button {
   background-color: #2575fc;
   color: #fff;
   border: none;
-  padding: 12px 20px;
+  padding: 14px 24px;
   font-size: 1em;
-  border-radius: 6px;
+  border-radius: 8px;
   cursor: pointer;
   transition: background-color 0.3s;
-  margin: 5px;
+  margin: 8px;
 }
 
 button:hover {
@@ -180,5 +186,12 @@ button:hover {
 @media (max-width: 768px) {
   .form-header {
     flex-direction: column;
+  }
+  .container {
+    padding: 25px;
+  }
+  button, input, textarea {
+    font-size: 0.95em;
+    padding: 12px;
   }
 }
