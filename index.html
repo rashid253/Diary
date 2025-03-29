@@ -13,28 +13,31 @@
       <h1>Homework Diary</h1>
     </header>
     
-    <!-- Image Upload & OCR Section -->
+    <!-- Image Upload Section -->
     <section class="upload-section">
-      <h2>Upload Diary Image for OCR</h2>
+      <h2>Select Diary Image</h2>
       <input type="file" id="imageUpload" accept="image/*" />
-      <button onclick="processImage()">Scan Image</button>
+      <!-- Image preview appears immediately after file selection -->
+      <div id="imagePreviewContainer" class="image-preview-container hidden">
+        <img id="uploadedImage" src="" alt="Uploaded Diary Image" />
+      </div>
+      <!-- "Scan Image" button appears after image is selected -->
+      <button id="scanButton" class="hidden" onclick="scanImage()">Scan Image</button>
     </section>
     
-    <!-- New OCR Preview Section (hidden by default) -->
-    <section id="ocrPreviewSection" class="ocr-preview-section hidden">
-      <h2>OCR Preview</h2>
-      <div class="preview-wrapper">
-        <div class="image-preview">
-          <h3>Image Preview</h3>
-          <img id="uploadedImage" src="" alt="Uploaded Diary Image" />
-        </div>
-        <div class="text-preview">
-          <h3>Extracted Text</h3>
-          <div id="extractedTextPreview">Processing...</div>
-        </div>
+    <!-- OCR Dialog: Floating overlay showing extracted text with a Close button -->
+    <div id="ocrDialog" class="ocr-dialog hidden">
+      <div class="ocr-content">
+        <h3>Extracted Text</h3>
+        <div id="extractedText">[Extracted text will appear here]</div>
+        <button onclick="closeOCRDialog()">Close</button>
       </div>
-      <button onclick="autoFillFromOCR()">Auto Fill Diary</button>
-    </section>
+    </div>
+    
+    <!-- Auto Fill Diary Button (appears after OCR dialog is closed) -->
+    <div id="autoFillSection" class="hidden">
+      <button onclick="autoFillDiary()">Auto Fill Diary</button>
+    </div>
     
     <!-- Standard Input Form Section -->
     <section class="input-section">
@@ -52,20 +55,33 @@
         <label for="studentName">Student Name:</label>
         <input type="text" id="studentName" placeholder="Enter Student Name" required />
 
-        <label for="urduHomework">Urdu Homework:</label>
-        <textarea id="urduHomework" placeholder="Enter Urdu Homework"></textarea>
-
-        <label for="englishHomework">English Homework:</label>
-        <textarea id="englishHomework" placeholder="Enter English Homework"></textarea>
-
-        <label for="mathHomework">Math Homework:</label>
-        <textarea id="mathHomework" placeholder="Enter Math Homework"></textarea>
-
-        <label for="scienceHomework">Science Homework:</label>
-        <textarea id="scienceHomework" placeholder="Enter Science Homework"></textarea>
-
-        <label for="socialHomework">Social Studies Homework:</label>
-        <textarea id="socialHomework" placeholder="Enter Social Studies Homework"></textarea>
+        <!-- Traditional Diary Table: Subjects on left, fields on right -->
+        <table class="diary-table">
+          <tr>
+            <th>Subject</th>
+            <th>Homework Details</th>
+          </tr>
+          <tr>
+            <td>Urdu</td>
+            <td><textarea id="urduHomework" placeholder="Enter Urdu Homework"></textarea></td>
+          </tr>
+          <tr>
+            <td>English</td>
+            <td><textarea id="englishHomework" placeholder="Enter English Homework"></textarea></td>
+          </tr>
+          <tr>
+            <td>Math</td>
+            <td><textarea id="mathHomework" placeholder="Enter Math Homework"></textarea></td>
+          </tr>
+          <tr>
+            <td>Science</td>
+            <td><textarea id="scienceHomework" placeholder="Enter Science Homework"></textarea></td>
+          </tr>
+          <tr>
+            <td>Social Studies</td>
+            <td><textarea id="socialHomework" placeholder="Enter Social Studies Homework"></textarea></td>
+          </tr>
+        </table>
 
         <label for="teacherNote">Teacher's Note:</label>
         <textarea id="teacherNote" placeholder="Enter Teacher's Note"></textarea>
@@ -76,8 +92,8 @@
         <button type="button" onclick="updatePreview()">Generate Diary Preview</button>
       </form>
     </section>
-
-    <!-- Preview & Output Section -->
+    
+    <!-- Preview & Output Section (Traditional Diary Style) -->
     <section class="preview-section">
       <h2>Diary Preview (Traditional Style)</h2>
       <div id="previewContent"></div>
@@ -90,8 +106,7 @@
   
   <!-- Include jsPDF for PDF generation -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-  <!-- Include Tesseract.js for OCR -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/tesseract.js/2.1.0/tesseract.min.js"></script>
+  <!-- We now use a dummy OCR function instead of Tesseract.js -->
   <script src="script.js"></script>
   <script>
     // Register service worker for PWA support
