@@ -3,14 +3,14 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Digital Homework Diary</title>
+  <title>Traditional Homework Diary</title>
   <link rel="stylesheet" href="style.css" />
   <link rel="manifest" href="manifest.json" />
 </head>
 <body>
   <div class="container">
     <header>
-      <h1>Digital Homework Diary</h1>
+      <h1>Traditional Homework Diary</h1>
     </header>
     
     <!-- Image Upload & OCR Section -->
@@ -42,7 +42,7 @@
           </div>
         </div>
         
-        <!-- Diary Table: Left side subject, right side field -->
+        <!-- Traditional Diary Table: Subjects on Left, Fields on Right -->
         <table class="diary-table">
           <tr>
             <th>Subject</th>
@@ -76,48 +76,17 @@
             <textarea id="teacherNote" placeholder="Enter Teacher's Note"></textarea>
           </div>
           <div class="field">
-            <label for="announcements">Announcements/Alerts</label>
-            <textarea id="announcements" placeholder="Enter Announcements/Alerts"></textarea>
+            <label for="announcements">Announcements / Alerts</label>
+            <textarea id="announcements" placeholder="Enter Announcements / Alerts"></textarea>
           </div>
         </div>
       </form>
     </section>
     
-    <!-- Parent Interaction Section -->
+    <!-- Guardian Comments Section -->
     <section class="interaction-section">
-      <h2>Parent Interaction</h2>
-      <div id="chatBox"></div>
-      <div class="chat-input">
-        <input type="text" id="chatInput" placeholder="Type message for parents..." />
-        <button id="sendChatBtn" onclick="sendChat()">Send</button>
-      </div>
+      <h2>Guardian Comments</h2>
+      <textarea id="guardianComments" placeholder="Enter comments or feedback for guardians..."></textarea>
     </section>
     
     <!-- Preview & Output Section -->
-    <section class="preview-section">
-      <h2>Diary Preview</h2>
-      <div id="previewContent"></div>
-      <div class="preview-buttons">
-        <button onclick="updatePreview()">Update Preview</button>
-        <button onclick="generatePDF()">Submit & Generate PDF</button>
-        <button onclick="shareWhatsApp()">Share via WhatsApp</button>
-      </div>
-    </section>
-  </div>
-  
-  <!-- Include Tesseract.js for OCR and jsPDF for PDF generation -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/tesseract.js/2.1.0/tesseract.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-  <script src="script.js"></script>
-  <script>
-    // Register service worker for PWA
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('./sw.js')
-          .then(reg => console.log('Service Worker registered with scope:', reg.scope))
-          .catch(err => console.error('Service Worker registration failed:', err));
-      });
-    }
-  </script>
-</body>
-</html>
