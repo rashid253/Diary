@@ -1,111 +1,111 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Homework Diary App</title>
-    <link rel="stylesheet" href="style.css" />
-    <link rel="manifest" href="manifest.json" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Homework Diary App</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="manifest" href="manifest.json" />
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>Homework Diary</h1>
-        </header>
+  <div class="container">
+    <header>
+      <h1>Homework Diary</h1>
+    </header>
 
-        <!-- Image Upload Section -->
-        <section class="upload-section">
-            <h2>Select Diary Image</h2>
-            <input type="file" id="imageUpload" accept="image/*" onchange="processImage()" />
-            
-            <div id="imagePreviewContainer" class="image-preview-container hidden">
-                <img id="uploadedImage" src="" alt="Uploaded Diary Image" />
-            </div>
-            
-            <button id="scanButton" class="hidden" onclick="scanImage()">Scan Image</button>
-        </section>
+    <!-- Image Upload Section -->
+    <section class="upload-section">
+      <h2>Select Diary Image</h2>
+      <input type="file" id="imageUpload" accept="image/*" onchange="processImage()" />
+      
+      <div id="imagePreviewContainer" class="image-preview-container hidden">
+        <img id="uploadedImage" src="" alt="Uploaded Diary Image" />
+      </div>
+      
+      <button id="scanButton" class="hidden" onclick="scanImage()">Scan Image</button>
+    </section>
 
-        <!-- OCR Dialog (Floating Overlay) -->
-        <div id="ocrDialog" class="ocr-dialog hidden">
-            <div class="ocr-content">
-                <h3>Extracted Text</h3>
-                <div id="extractedText">Processing...</div>
-                <button onclick="closeOCRDialog()">Close</button>
-            </div>
-        </div>
-
-        <!-- Auto Fill Diary Button -->
-        <div id="autoFillSection" class="hidden">
-            <button onclick="autoFillDiary()">Auto Fill Diary</button>
-        </div>
-
-        <!-- Standard Input Form Section (Vertical Layout) -->
-        <section class="input-section">
-            <h2>Enter Diary Details</h2>
-            <form id="diaryForm">
-                <label for="diaryDate">Date:</label>
-                <input type="date" id="diaryDate" required />
-                
-                <label for="schoolName">School Name:</label>
-                <input type="text" id="schoolName" placeholder="Enter School Name" required />
-                
-                <label for="className">Class:</label>
-                <input type="text" id="className" placeholder="e.g., 5th-A" required />
-                
-                <label for="studentName">Student Name:</label>
-                <input type="text" id="studentName" placeholder="Enter Student Name" required />
-
-                <!-- Homework Subjects -->
-                <label for="urduHomework">Urdu:</label>
-                <textarea id="urduHomework" placeholder="Enter details for Urdu"></textarea>
-
-                <label for="englishHomework">English:</label>
-                <textarea id="englishHomework" placeholder="Enter details for English"></textarea>
-
-                <label for="mathHomework">Math:</label>
-                <textarea id="mathHomework" placeholder="Enter details for Math"></textarea>
-
-                <label for="scienceHomework">Science:</label>
-                <textarea id="scienceHomework" placeholder="Enter details for Science"></textarea>
-
-                <label for="socialHomework">Social Studies:</label>
-                <textarea id="socialHomework" placeholder="Enter details for Social Studies"></textarea>
-
-                <label for="teacherNote">Teacher's Note:</label>
-                <textarea id="teacherNote" placeholder="Enter Teacher's Note"></textarea>
-
-                <label for="announcements">Announcements / Alerts:</label>
-                <textarea id="announcements" placeholder="Enter Announcements / Alerts"></textarea>
-
-                <button type="button" onclick="updatePreview()">Generate Diary Preview</button>
-            </form>
-        </section>
-
-        <!-- Preview & Output Section -->
-        <section class="preview-section">
-            <h2>Diary Preview (Traditional Style)</h2>
-            <div id="previewContent"></div>
-            <div class="preview-buttons">
-                <button onclick="generatePDF()">Download as PDF</button>
-                <button onclick="shareDiary()">Share via WhatsApp</button>
-            </div>
-        </section>
+    <!-- OCR Dialog (Floating Overlay) -->
+    <div id="ocrDialog" class="ocr-dialog hidden">
+      <div class="ocr-content">
+        <h3>Extracted Text</h3>
+        <div id="extractedText">Processing...</div>
+        <button onclick="closeOCRDialog()">Close</button>
+      </div>
     </div>
 
-    <!-- External Scripts -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/tesseract.js/2.1.0/tesseract.min.js"></script>
-    <script src="script.js"></script>
-    
-    <!-- PWA Service Worker Registration -->
-    <script>
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('./sw.js')
-                    .then(reg => console.log('Service Worker registered'))
-                    .catch(err => console.log('Service Worker registration failed:', err));
-            });
-        }
-    </script>
+    <!-- Auto Fill Diary Button -->
+    <div id="autoFillSection" class="hidden">
+      <button onclick="autoFillDiary()">Auto Fill Diary</button>
+    </div>
+
+    <!-- Standard Input Form Section (Vertical Layout) -->
+    <section class="input-section">
+      <h2>Enter Diary Details</h2>
+      <form id="diaryForm">
+        <label for="diaryDate">Date:</label>
+        <input type="date" id="diaryDate" required />
+        
+        <label for="schoolName">School Name:</label>
+        <input type="text" id="schoolName" placeholder="Enter School Name" required />
+        
+        <label for="className">Class:</label>
+        <input type="text" id="className" placeholder="e.g., 5th-A" required />
+        
+        <label for="studentName">Student Name:</label>
+        <input type="text" id="studentName" placeholder="Enter Student Name" required />
+
+        <!-- Homework Subjects (Simple labels) -->
+        <label for="urduHomework">Urdu:</label>
+        <textarea id="urduHomework" placeholder="Enter details for Urdu"></textarea>
+
+        <label for="englishHomework">English:</label>
+        <textarea id="englishHomework" placeholder="Enter details for English"></textarea>
+
+        <label for="mathHomework">Math:</label>
+        <textarea id="mathHomework" placeholder="Enter details for Math"></textarea>
+
+        <label for="scienceHomework">Science:</label>
+        <textarea id="scienceHomework" placeholder="Enter details for Science"></textarea>
+
+        <label for="socialHomework">Social Studies:</label>
+        <textarea id="socialHomework" placeholder="Enter details for Social Studies"></textarea>
+
+        <label for="teacherNote">Teacher's Note:</label>
+        <textarea id="teacherNote" placeholder="Enter Teacher's Note"></textarea>
+
+        <label for="announcements">Announcements / Alerts:</label>
+        <textarea id="announcements" placeholder="Enter Announcements / Alerts"></textarea>
+
+        <button type="button" onclick="updatePreview()">Generate Diary Preview</button>
+      </form>
+    </section>
+
+    <!-- Preview & Output Section -->
+    <section class="preview-section">
+      <h2>Diary Preview (Traditional Style)</h2>
+      <div id="previewContent"></div>
+      <div class="preview-buttons">
+        <button onclick="generatePDF()">Download as PDF</button>
+        <button onclick="shareDiary()">Share via WhatsApp</button>
+      </div>
+    </section>
+  </div>
+
+  <!-- External Scripts -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/tesseract.js/2.1.0/tesseract.min.js"></script>
+  <script src="script.js"></script>
+  
+  <!-- PWA Service Worker Registration -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js')
+          .then(reg => console.log('Service Worker registered'))
+          .catch(err => console.log('Service Worker registration failed:', err));
+      });
+    }
+  </script>
 </body>
 </html>
