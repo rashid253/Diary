@@ -1,15 +1,40 @@
-// Dummy OCR simulation function (replace with actual API integration as needed)
-function simulateOCR(imageData) {
-  return new Promise((resolve) => {
-    // Simulate a delay for OCR processing
-    setTimeout(() => {
-      // For demonstration, return dummy extracted text.
-      resolve("Urdu: پڑھائی کا کام\nEnglish: Write an essay on Nature\nMath: Solve exercise 5.2\nScience: Read chapter 3\nSocial Studies: Prepare notes on history");
-    }, 2000);
+// Call Google Cloud Vision OCR API
+function callGoogleVisionOCR(imageBase64) {
+  const apiKey = "YOUR_API_KEY"; // Replace with your actual API key
+  const url = `https://vision.googleapis.com/v1/images:annotate?key=${apiKey}`;
+
+  const requestBody = {
+    requests: [
+      {
+        image: {
+          content: imageBase64
+        },
+        features: [
+          {
+            type: "TEXT_DETECTION",
+            maxResults: 1
+          }
+        ]
+      }
+    ]
+  };
+
+  return fetch(url, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(requestBody)
+  })
+  .then(response => response.json())
+  .then(data => {
+    if (data.responses && data.responses[0].fullTextAnnotation) {
+      return data.responses[0].fullTextAnnotation.text;
+    } else {
+      throw new Error("No text detected");
+    }
   });
 }
 
-// Process image: show preview and start OCR simulation.
+// Process image: show preview and call OCR API.
 function processImage() {
   const imageInput = document.getElementById("imageUpload");
   if (!imageInput.files[0]) {
@@ -18,10 +43,11 @@ function processImage() {
   }
   const file = imageInput.files[0];
   const reader = new FileReader();
-  
+
   reader.onload = function () {
+    const imageDataUrl = reader.result;
     // Show image preview
-    document.getElementById("uploadedImage").src = reader.result;
+    document.getElementById("uploadedImage").src = imageDataUrl;
     document.getElementById("imagePreviewContainer").classList.remove("hidden");
     // Show "Scan Image" button
     document.getElementById("scanButton").classList.remove("hidden");
@@ -29,37 +55,42 @@ function processImage() {
   reader.readAsDataURL(file);
 }
 
-// Scan image: simulate OCR extraction and display floating dialog.
+// Scan image: use Google Vision API to extract text and display OCR dialog.
 function scanImage() {
-  const imageData = document.getElementById("uploadedImage").src;
-  if (!imageData) {
-    alert("No image to scan.");
+  const imageDataUrl = document.getElementById("uploadedImage").src;
+  if (!imageDataUrl) {
+    alert("No image available to scan.");
     return;
   }
-  // Show dialog with "Processing..." initially.
+  // Convert data URL to Base64 (remove header)
+  const base64String = imageDataUrl.replace(/^data:image\/[a-z]+;base64,/, "");
+  // Show OCR dialog with processing message
   const ocrDialog = document.getElementById("ocrDialog");
-  const extractedTextDiv = document.getElementById("extractedText");
-  extractedTextDiv.innerText = "Processing OCR...";
+  document.getElementById("extractedText").innerText = "Processing OCR...";
   ocrDialog.classList.remove("hidden");
-  
-  // Call the dummy OCR simulation function.
-  simulateOCR(imageData).then(extractedText => {
-    extractedTextDiv.innerText = extractedText;
-  });
+
+  // Call Google Cloud Vision OCR API
+  callGoogleVisionOCR(base64String)
+    .then(extractedText => {
+      document.getElementById("extractedText").innerText = extractedText;
+    })
+    .catch(err => {
+      console.error("OCR error:", err);
+      document.getElementById("extractedText").innerText = "Error extracting text.";
+    });
 }
 
-// Close the OCR dialog.
+// Close OCR dialog and show Auto Fill Diary button.
 function closeOCRDialog() {
   document.getElementById("ocrDialog").classList.add("hidden");
-  // Reveal the Auto Fill Diary button.
   document.getElementById("autoFillSection").classList.remove("hidden");
 }
 
-// Auto-fill the diary form using extracted OCR text.
+// Auto-fill diary form from extracted OCR text.
 function autoFillDiary() {
   const extractedText = document.getElementById("extractedText").innerText;
-  if (!extractedText || extractedText === "Processing OCR...") {
-    alert("No extracted text available.");
+  if (!extractedText || extractedText === "Processing OCR..." || extractedText === "Error extracting text.") {
+    alert("No valid extracted text available.");
     return;
   }
   const homeworkData = autoClassifyHomework(extractedText);
@@ -67,7 +98,7 @@ function autoFillDiary() {
   alert("Diary form auto-filled. Please review and adjust as needed.");
 }
 
-// Basic auto-classification using regex.
+// Auto-classify extracted text using regex.
 function autoClassifyHomework(text) {
   const subjects = {
     "Urdu": /(urdu|adab):\s*(.*)/i,
@@ -96,7 +127,7 @@ function autoClassifyHomework(text) {
   return homework;
 }
 
-// Fill the form with classified homework data.
+// Fill the diary form with classified homework data.
 function fillReviewForm(homeworkData) {
   document.getElementById("urduHomework").value = homeworkData["Urdu"];
   document.getElementById("englishHomework").value = homeworkData["English"];
@@ -105,7 +136,7 @@ function fillReviewForm(homeworkData) {
   document.getElementById("socialHomework").value = homeworkData["Social Studies"];
 }
 
-// Update preview section with diary form data in traditional layout.
+// Update preview with diary form data in traditional diary style.
 function updatePreview() {
   const date = document.getElementById("diaryDate").value || "__________";
   const schoolName = document.getElementById("schoolName").value || "__________";
@@ -158,7 +189,7 @@ function updatePreview() {
   document.getElementById("previewContent").innerHTML = previewHTML;
 }
 
-// Generate PDF using jsPDF
+// Generate PDF using jsPDF.
 function generatePDF() {
   updatePreview();
   const { jsPDF } = window.jspdf;
@@ -168,7 +199,7 @@ function generatePDF() {
   doc.save('HomeworkDiary.pdf');
 }
 
-// Share diary via WhatsApp.
+// Share diary content via WhatsApp.
 function shareDiary() {
   const diaryText = document.getElementById("previewContent").innerText;
   if (!diaryText) {
