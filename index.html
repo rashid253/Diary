@@ -10,62 +10,83 @@
 <body>
   <div class="container">
     <h1>Digital Homework Diary</h1>
-    <!-- Image upload for diary capture -->
-    <input type="file" id="imageUpload" accept="image/*" />
-    <button onclick="processImage()">Extract Homework</button>
     
-    <!-- Form for manual data entry (for verification & correction) -->
-    <div id="reviewSection" class="hidden">
-      <h2>Review & Edit Homework</h2>
+    <!-- Image Capture & OCR Section -->
+    <section id="ocrSection">
+      <h2>Upload Diary Image (for OCR)</h2>
+      <input type="file" id="imageUpload" accept="image/*" />
+      <button onclick="processImage()">Scan & Auto-Fill</button>
+    </section>
+    
+    <!-- Editable Diary Form -->
+    <section id="diaryFormSection">
+      <h2>Edit Diary Details</h2>
       <form id="diaryForm">
         <label>Date:</label>
-        <input type="date" id="diaryDate" required /><br>
-        <label>School Name:</label>
-        <input type="text" id="schoolName" placeholder="Enter School Name" required /><br>
-        <label>Class:</label>
-        <input type="text" id="className" placeholder="Enter Class (e.g., 5th-A)" required /><br>
-        <label>Student Name:</label>
-        <input type="text" id="studentName" placeholder="Enter Student Name" required /><br>
+        <input type="date" id="diaryDate" required />
         
-        <!-- Subject Homework fields -->
+        <label>School Name:</label>
+        <input type="text" id="schoolName" placeholder="Enter School Name" required />
+        
+        <label>Class:</label>
+        <input type="text" id="className" placeholder="Enter Class (e.g., 5th-A)" required />
+        
+        <label>Student Name:</label>
+        <input type="text" id="studentName" placeholder="Enter Student Name" required />
+        
         <h3>Homework Details</h3>
         <label>Urdu:</label>
-        <textarea id="urduHomework" placeholder="Urdu Homework"></textarea><br>
+        <textarea id="urduHomework" placeholder="Urdu Homework"></textarea>
+        
         <label>English:</label>
-        <textarea id="englishHomework" placeholder="English Homework"></textarea><br>
+        <textarea id="englishHomework" placeholder="English Homework"></textarea>
+        
         <label>Math:</label>
-        <textarea id="mathHomework" placeholder="Math Homework"></textarea><br>
+        <textarea id="mathHomework" placeholder="Math Homework"></textarea>
+        
         <label>Science:</label>
-        <textarea id="scienceHomework" placeholder="Science Homework"></textarea><br>
+        <textarea id="scienceHomework" placeholder="Science Homework"></textarea>
+        
         <label>Social Studies:</label>
-        <textarea id="socialHomework" placeholder="Social Studies Homework"></textarea><br>
+        <textarea id="socialHomework" placeholder="Social Studies Homework"></textarea>
         
         <label>Teacher's Note:</label>
-        <textarea id="teacherNote" placeholder="Any additional note"></textarea><br>
-        <label>Important Announcements:</label>
-        <textarea id="announcements" placeholder="Announcements"></textarea><br>
+        <textarea id="teacherNote" placeholder="Any additional note"></textarea>
         
-        <button type="button" onclick="updatePreview()">Update Preview</button>
+        <label>Alerts/Announcements:</label>
+        <textarea id="announcements" placeholder="Alerts or Announcements"></textarea>
       </form>
-    </div>
+    </section>
     
-    <!-- Preview of the final digital diary -->
-    <div id="previewSection" class="hidden">
+    <!-- Parent Interaction Section -->
+    <section id="parentInteraction">
+      <h2>Parent Interaction</h2>
+      <div id="chatBox">
+        <!-- Chat messages will appear here -->
+      </div>
+      <input type="text" id="chatInput" placeholder="Type a message for parents..." />
+      <button onclick="sendChat()">Send Message</button>
+    </section>
+    
+    <!-- Preview & Output Section -->
+    <section id="previewSection">
       <h2>Diary Preview</h2>
       <div id="previewContent"></div>
-      <button onclick="window.print()">Print / Save PDF</button>
-      <button onclick="sendToWhatsApp()">Send to WhatsApp</button>
-    </div>
+      <button onclick="generatePDF()">Submit Diary (Generate PDF)</button>
+      <button onclick="shareWhatsApp()">Share via WhatsApp</button>
+    </section>
   </div>
   
-  <!-- Tesseract.js for OCR -->
+  <!-- Include Tesseract.js for OCR -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/tesseract.js/2.1.0/tesseract.min.js"></script>
+  <!-- Include jsPDF for PDF generation -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script src="script.js"></script>
   <script>
     // Register service worker for PWA features
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/sw.js')
+        navigator.serviceWorker.register('./sw.js')
           .then(reg => console.log('Service Worker registered with scope:', reg.scope))
           .catch(err => console.error('Service Worker registration failed:', err));
       });
