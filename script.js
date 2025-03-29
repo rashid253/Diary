@@ -1,28 +1,26 @@
-// Function to process the uploaded image using Tesseract.js
+// Process image using Tesseract.js and auto-fill homework fields.
 function processImage() {
   const imageInput = document.getElementById("imageUpload");
   if (!imageInput.files[0]) {
     alert("Please upload an image.");
     return;
   }
-  
   const reader = new FileReader();
-  reader.onload = function() {
-    Tesseract.recognize(reader.result, 'eng', { logger: m => console.log(m) })
-      .then(({ data: { text } }) => {
-        // Use simple regex-based segmentation to classify homework
-        const homeworkData = autoClassifyHomework(text);
-        // Pre-fill the review form with extracted text
-        fillReviewForm(homeworkData);
-        // Show the review section
-        document.getElementById("reviewSection").classList.remove("hidden");
-      })
-      .catch(err => console.error("OCR error:", err));
+  reader.onload = function () {
+    Tesseract.recognize(reader.result, 'eng', {
+      logger: m => console.log(m)
+    })
+    .then(({ data: { text } }) => {
+      const homeworkData = autoClassifyHomework(text);
+      fillReviewForm(homeworkData);
+      alert("OCR Complete! Please review and edit if needed.");
+    })
+    .catch(err => console.error("OCR error:", err));
   };
   reader.readAsDataURL(imageInput.files[0]);
 }
 
-// Basic auto-classification of text for subjects using regex
+// Auto-classify extracted text to different subjects using simple regex.
 function autoClassifyHomework(text) {
   const subjects = {
     "Urdu": /(urdu|adab)/i,
@@ -31,7 +29,7 @@ function autoClassifyHomework(text) {
     "Science": /(science|physics|chemistry|biology)/i,
     "Social Studies": /(social studies|history|geography)/i
   };
-  // Initialize homework data with empty strings
+  // Initialize homework data with empty strings.
   let homework = {
     "Urdu": "",
     "English": "",
@@ -39,40 +37,37 @@ function autoClassifyHomework(text) {
     "Science": "",
     "Social Studies": ""
   };
-  // Split text into lines
   let lines = text.split(/\r?\n/);
   let currentSubject = null;
   
   lines.forEach(line => {
     line = line.trim();
     if (!line) return;
-    // Check if line contains a subject keyword
-    let foundSubject = false;
+    let found = false;
     for (const subject in subjects) {
       if (subjects[subject].test(line)) {
         currentSubject = subject;
-        // Remove the subject keyword from the line if needed
+        // Remove subject keyword from line and store remaining details.
         let details = line.replace(subjects[subject], "").trim(" :-");
         homework[subject] += details + " ";
-        foundSubject = true;
+        found = true;
         break;
       }
     }
-    // If no subject keyword is found, assume it belongs to the current subject
-    if (!foundSubject && currentSubject) {
+    if (!found && currentSubject) {
       homework[currentSubject] += line + " ";
     }
   });
-  // Trim extra spaces
+  
+  // Trim extra spaces.
   for (const subject in homework) {
     homework[subject] = homework[subject].trim();
   }
   return homework;
 }
 
-// Fill the review form with auto-classified homework data
+// Pre-fill the form with auto-classified homework.
 function fillReviewForm(homeworkData) {
-  // You can further improve this function to parse out and fill more fields
   document.getElementById("urduHomework").value = homeworkData["Urdu"];
   document.getElementById("englishHomework").value = homeworkData["English"];
   document.getElementById("mathHomework").value = homeworkData["Math"];
@@ -80,17 +75,31 @@ function fillReviewForm(homeworkData) {
   document.getElementById("socialHomework").value = homeworkData["Social Studies"];
 }
 
-// Generate a preview of the final digital diary
+// Generate a preview and convert the diary into a PDF.
+function generatePDF() {
+  updatePreview(); // Ensure the preview is updated.
+  
+  // Using jsPDF to generate a PDF document.
+  const { jsPDF } = window.jspdf;
+  let doc = new jsPDF();
+  let previewText = document.getElementById("previewContent").innerText;
+  doc.text(previewText, 10, 10);
+  doc.save('HomeworkDiary.pdf');
+}
+
+// Update the preview section with the current form data.
 function updatePreview() {
   const date = document.getElementById("diaryDate").value || "__________";
   const schoolName = document.getElementById("schoolName").value || "__________";
   const className = document.getElementById("className").value || "__________";
   const studentName = document.getElementById("studentName").value || "__________";
+  
   const urdu = document.getElementById("urduHomework").value || "______________________";
   const english = document.getElementById("englishHomework").value || "______________________";
   const math = document.getElementById("mathHomework").value || "______________________";
   const science = document.getElementById("scienceHomework").value || "______________________";
   const social = document.getElementById("socialHomework").value || "______________________";
+  
   const teacherNote = document.getElementById("teacherNote").value || "_________________________________________________";
   const announcements = document.getElementById("announcements").value || "_________________________________________________";
   
@@ -100,7 +109,7 @@ function updatePreview() {
     <p><strong>Class:</strong> ${className}</p>
     <p><strong>Student Name:</strong> ${studentName}</p>
     <h3>Homework Details</h3>
-    <table>
+    <table border="1" width="100%" cellspacing="0" cellpadding="5">
       <tr><th>Subject</th><th>Homework</th></tr>
       <tr><td>Urdu</td><td>${urdu}</td></tr>
       <tr><td>English</td><td>${english}</td></tr>
@@ -111,14 +120,11 @@ function updatePreview() {
     <p><strong>Teacher's Note:</strong> ${teacherNote}</p>
     <p><strong>Announcements:</strong> ${announcements}</p>
   `;
-  
   document.getElementById("previewContent").innerHTML = previewHTML;
-  // Show the preview section
-  document.getElementById("previewSection").classList.remove("hidden");
 }
 
-// Open WhatsApp with the final diary text (URL-encoded)
-function sendToWhatsApp() {
+// Open WhatsApp with diary text pre-filled.
+function shareWhatsApp() {
   const diaryText = document.getElementById("previewContent").innerText;
   if (!diaryText) {
     alert("No diary content available to send.");
@@ -126,4 +132,22 @@ function sendToWhatsApp() {
   }
   const url = "https://api.whatsapp.com/send?text=" + encodeURIComponent(diaryText);
   window.open(url, "_blank");
+}
+
+// Simple Parent Interaction Chat: Append message to chat box.
+function sendChat() {
+  const chatInput = document.getElementById("chatInput");
+  let message = chatInput.value.trim();
+  if (message === "") {
+    alert("Please type a message.");
+    return;
+  }
+  let chatBox = document.getElementById("chatBox");
+  let msgElem = document.createElement("p");
+  msgElem.innerHTML = `<strong>You:</strong> ${message}`;
+  chatBox.appendChild(msgElem);
+  chatInput.value = "";
+  
+  // Here you can add integration with a backend or a chatbot for parent interaction.
+  // For now, we simply display the message.
 }
