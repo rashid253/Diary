@@ -34,7 +34,7 @@
       </div>
     </div>
     
-    <!-- Auto Fill Button -->
+    <!-- Auto Fill Diary Button -->
     <div id="autoFillSection" class="hidden">
       <button onclick="autoFillDiary()">Auto Fill Diary</button>
     </div>
@@ -55,21 +55,21 @@
         <label for="studentName">Student Name:</label>
         <input type="text" id="studentName" placeholder="Enter Student Name" required />
 
-        <!-- Homework Details in Standard Form Style -->
-        <label for="urduHomework">Urdu Homework:</label>
-        <textarea id="urduHomework" placeholder="Enter Urdu Homework"></textarea>
+        <!-- Homework Details with Subject names only -->
+        <label for="urduHomework">Urdu:</label>
+        <textarea id="urduHomework" placeholder="Enter details for Urdu"></textarea>
 
-        <label for="englishHomework">English Homework:</label>
-        <textarea id="englishHomework" placeholder="Enter English Homework"></textarea>
+        <label for="englishHomework">English:</label>
+        <textarea id="englishHomework" placeholder="Enter details for English"></textarea>
 
-        <label for="mathHomework">Math Homework:</label>
-        <textarea id="mathHomework" placeholder="Enter Math Homework"></textarea>
+        <label for="mathHomework">Math:</label>
+        <textarea id="mathHomework" placeholder="Enter details for Math"></textarea>
 
-        <label for="scienceHomework">Science Homework:</label>
-        <textarea id="scienceHomework" placeholder="Enter Science Homework"></textarea>
+        <label for="scienceHomework">Science:</label>
+        <textarea id="scienceHomework" placeholder="Enter details for Science"></textarea>
 
-        <label for="socialHomework">Social Studies Homework:</label>
-        <textarea id="socialHomework" placeholder="Enter Social Studies Homework"></textarea>
+        <label for="socialHomework">Social Studies:</label>
+        <textarea id="socialHomework" placeholder="Enter details for Social Studies"></textarea>
 
         <label for="teacherNote">Teacher's Note:</label>
         <textarea id="teacherNote" placeholder="Enter Teacher's Note"></textarea>
@@ -83,7 +83,7 @@
     
     <!-- Preview & Output Section -->
     <section class="preview-section">
-      <h2>Diary Preview (Standard Style)</h2>
+      <h2>Diary Preview (Traditional Style)</h2>
       <div id="previewContent"></div>
       <div class="preview-buttons">
         <button onclick="generatePDF()">Download as PDF</button>
@@ -94,7 +94,7 @@
   
   <!-- Include jsPDF for PDF generation -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-  <!-- Include Tesseract.js (or replace with your OCR API) -->
+  <!-- Include Tesseract.js or replace with your actual OCR API call -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/tesseract.js/2.1.0/tesseract.min.js"></script>
   <script src="script.js"></script>
   <script>
