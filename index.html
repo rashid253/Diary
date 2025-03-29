@@ -25,18 +25,15 @@
       <button id="scanButton" class="hidden" onclick="scanImage()">Scan Image</button>
     </section>
 
-    <!-- OCR Dialog (Floating Overlay) -->
+    <!-- OCR Dialog (Floating Overlay) with Auto Fill Option -->
     <div id="ocrDialog" class="ocr-dialog hidden">
       <div class="ocr-content">
         <h3>Extracted Text</h3>
         <div id="extractedText">Processing...</div>
+        <!-- Auto Fill Diary Button inside the dialog -->
+        <button onclick="autoFillDiary()">Auto Fill Diary</button>
         <button onclick="closeOCRDialog()">Close</button>
       </div>
-    </div>
-
-    <!-- Auto Fill Diary Button -->
-    <div id="autoFillSection" class="hidden">
-      <button onclick="autoFillDiary()">Auto Fill Diary</button>
     </div>
 
     <!-- Standard Input Form Section (Vertical Layout) -->
@@ -55,7 +52,7 @@
         <label for="studentName">Student Name:</label>
         <input type="text" id="studentName" placeholder="Enter Student Name" required />
 
-        <!-- Homework Subjects (Simple labels) -->
+        <!-- Homework Subjects with simple labels -->
         <label for="urduHomework">Urdu:</label>
         <textarea id="urduHomework" placeholder="Enter details for Urdu"></textarea>
 
