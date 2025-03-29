@@ -5,7 +5,7 @@
   box-sizing: border-box;
 }
 body {
-  font-family: 'Arial', sans-serif;
+  font-family: Arial, sans-serif;
   background: #f4f4f4;
   color: #333;
   padding: 10px;
@@ -17,6 +17,11 @@ body {
   margin: 0 auto;
   padding: 20px;
   border-radius: 8px;
+}
+
+/* Utility Classes */
+.hidden {
+  display: none;
 }
 
 /* Header */
@@ -95,23 +100,7 @@ header h1 {
   border: none;
   border-radius: 5px;
   cursor: pointer;
-}
-
-/* Auto Fill Button */
-#autoFillSection {
-  text-align: center;
-  margin-bottom: 20px;
-}
-#autoFillSection.hidden {
-  display: none;
-}
-#autoFillSection button {
-  padding: 10px 20px;
-  background-color: #2575fc;
-  color: #fff;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
+  margin-right: 5px;
 }
 
 /* Input Section (Standard Form) */
@@ -144,16 +133,13 @@ header h1 {
   cursor: pointer;
 }
 
-/* Preview Section - Traditional Diary Style */
+/* Preview Section (Traditional Diary Style) */
 .preview-section {
   margin-top: 30px;
   padding: 20px;
-  background: #fff;
-  border: 2px solid #e0e0e0;
-  border-radius: 8px;
-  /* Traditional diary feel: subtle paper texture color and elegant border */
   background: #fcfaf3;
   border: 2px solid #d8c3a5;
+  border-radius: 8px;
 }
 #previewContent {
   text-align: left;
@@ -161,6 +147,7 @@ header h1 {
   font-family: 'Georgia', serif;
   font-size: 1.1em;
   color: #3e3e3e;
+  line-height: 1.6;
 }
 .preview-buttons {
   text-align: center;
