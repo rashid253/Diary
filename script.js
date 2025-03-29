@@ -34,7 +34,7 @@ function callGoogleVisionOCR(imageBase64) {
   });
 }
 
-// Process image: show preview and call OCR API.
+// Process image: show preview and enable scan.
 function processImage() {
   const imageInput = document.getElementById("imageUpload");
   if (!imageInput.files[0]) {
@@ -55,21 +55,21 @@ function processImage() {
   reader.readAsDataURL(file);
 }
 
-// Scan image: use Google Vision API to extract text and display OCR dialog.
+// Scan image: use Google Cloud Vision OCR API and display floating dialog.
 function scanImage() {
   const imageDataUrl = document.getElementById("uploadedImage").src;
   if (!imageDataUrl) {
     alert("No image available to scan.");
     return;
   }
-  // Convert data URL to Base64 (remove header)
+  // Convert image data URL to Base64 string
   const base64String = imageDataUrl.replace(/^data:image\/[a-z]+;base64,/, "");
   // Show OCR dialog with processing message
   const ocrDialog = document.getElementById("ocrDialog");
   document.getElementById("extractedText").innerText = "Processing OCR...";
   ocrDialog.classList.remove("hidden");
 
-  // Call Google Cloud Vision OCR API
+  // Call OCR API
   callGoogleVisionOCR(base64String)
     .then(extractedText => {
       document.getElementById("extractedText").innerText = extractedText;
@@ -80,13 +80,13 @@ function scanImage() {
     });
 }
 
-// Close OCR dialog and show Auto Fill Diary button.
+// Close OCR dialog and reveal Auto Fill Diary button.
 function closeOCRDialog() {
   document.getElementById("ocrDialog").classList.add("hidden");
   document.getElementById("autoFillSection").classList.remove("hidden");
 }
 
-// Auto-fill diary form from extracted OCR text.
+// Auto-fill the diary form based on extracted text.
 function autoFillDiary() {
   const extractedText = document.getElementById("extractedText").innerText;
   if (!extractedText || extractedText === "Processing OCR..." || extractedText === "Error extracting text.") {
@@ -98,7 +98,7 @@ function autoFillDiary() {
   alert("Diary form auto-filled. Please review and adjust as needed.");
 }
 
-// Auto-classify extracted text using regex.
+// Basic auto-classification using regex.
 function autoClassifyHomework(text) {
   const subjects = {
     "Urdu": /(urdu|adab):\s*(.*)/i,
@@ -136,7 +136,7 @@ function fillReviewForm(homeworkData) {
   document.getElementById("socialHomework").value = homeworkData["Social Studies"];
 }
 
-// Update preview with diary form data in traditional diary style.
+// Update preview with diary form data in standard layout.
 function updatePreview() {
   const date = document.getElementById("diaryDate").value || "__________";
   const schoolName = document.getElementById("schoolName").value || "__________";
@@ -152,37 +152,17 @@ function updatePreview() {
   const teacherNote = document.getElementById("teacherNote").value || "_________________________________________________";
   const announcements = document.getElementById("announcements").value || "_________________________________________________";
   
+  // Build the preview in a standard (vertical) style.
   let previewHTML = `
     <p><strong>Date:</strong> ${date}</p>
     <p><strong>School Name:</strong> ${schoolName}</p>
     <p><strong>Class:</strong> ${className}</p>
     <p><strong>Student Name:</strong> ${studentName}</p>
-    <table class="diary-output">
-      <tr>
-        <th>Subject</th>
-        <th>Homework Details</th>
-      </tr>
-      <tr>
-        <td>Urdu</td>
-        <td>${urdu}</td>
-      </tr>
-      <tr>
-        <td>English</td>
-        <td>${english}</td>
-      </tr>
-      <tr>
-        <td>Math</td>
-        <td>${math}</td>
-      </tr>
-      <tr>
-        <td>Science</td>
-        <td>${science}</td>
-      </tr>
-      <tr>
-        <td>Social Studies</td>
-        <td>${social}</td>
-      </tr>
-    </table>
+    <p><strong>Urdu Homework:</strong> ${urdu}</p>
+    <p><strong>English Homework:</strong> ${english}</p>
+    <p><strong>Math Homework:</strong> ${math}</p>
+    <p><strong>Science Homework:</strong> ${science}</p>
+    <p><strong>Social Studies Homework:</strong> ${social}</p>
     <p><strong>Teacher's Note:</strong> ${teacherNote}</p>
     <p><strong>Announcements / Alerts:</strong> ${announcements}</p>
   `;
@@ -199,7 +179,7 @@ function generatePDF() {
   doc.save('HomeworkDiary.pdf');
 }
 
-// Share diary content via WhatsApp.
+// Share diary via WhatsApp.
 function shareDiary() {
   const diaryText = document.getElementById("previewContent").innerText;
   if (!diaryText) {
