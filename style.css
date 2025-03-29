@@ -5,8 +5,8 @@
   box-sizing: border-box;
 }
 body {
-  font-family: Arial, sans-serif;
-  background: #f4f4f4; /* Neutral background */
+  font-family: 'Arial', sans-serif;
+  background: #f4f4f4;
   color: #333;
   padding: 10px;
 }
@@ -144,18 +144,23 @@ header h1 {
   cursor: pointer;
 }
 
-/* Preview Section (Standard Output Style) */
+/* Preview Section - Traditional Diary Style */
 .preview-section {
   margin-top: 30px;
   padding: 20px;
   background: #fff;
-  border: 1px solid #ddd;
-  border-radius: 5px;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  /* Traditional diary feel: subtle paper texture color and elegant border */
+  background: #fcfaf3;
+  border: 2px solid #d8c3a5;
 }
 #previewContent {
   text-align: left;
   margin-top: 15px;
-  line-height: 1.6;
+  font-family: 'Georgia', serif;
+  font-size: 1.1em;
+  color: #3e3e3e;
 }
 .preview-buttons {
   text-align: center;
