@@ -1,4 +1,4 @@
-// Process image: show preview and enable the scan button.
+// Process image: show preview and reveal the scan button.
 function processImage() {
   const imageInput = document.getElementById("imageUpload");
   if (!imageInput.files[0]) {
@@ -10,28 +10,28 @@ function processImage() {
 
   reader.onload = function () {
     const imageDataUrl = reader.result;
-    // Show image preview
+    // Set the image preview source.
     document.getElementById("uploadedImage").src = imageDataUrl;
+    // Unhide the image preview container.
     document.getElementById("imagePreviewContainer").classList.remove("hidden");
-    // Show "Scan Image" button
+    // Unhide the "Scan Image" button.
     document.getElementById("scanButton").classList.remove("hidden");
   };
   reader.readAsDataURL(file);
 }
 
-// Scan image using Tesseract.js for OCR.
+// Scan image: use Tesseract.js for OCR.
 function scanImage() {
   const imageDataUrl = document.getElementById("uploadedImage").src;
   if (!imageDataUrl) {
     alert("No image available to scan.");
     return;
   }
-  // Show OCR dialog with initial processing message.
+  // Show OCR dialog with a processing message.
   const ocrDialog = document.getElementById("ocrDialog");
   document.getElementById("extractedText").innerText = "Processing OCR...";
   ocrDialog.classList.remove("hidden");
 
-  // Use Tesseract.js to extract text.
   Tesseract.recognize(imageDataUrl, 'eng', { logger: m => console.log(m) })
     .then(({ data: { text } }) => {
       document.getElementById("extractedText").innerText = text;
@@ -42,13 +42,12 @@ function scanImage() {
     });
 }
 
-// Close OCR dialog and reveal Auto Fill Diary button.
+// Close OCR dialog.
 function closeOCRDialog() {
   document.getElementById("ocrDialog").classList.add("hidden");
-  document.getElementById("autoFillSection").classList.remove("hidden");
 }
 
-// Auto-fill the diary form from the extracted OCR text.
+// Auto-fill the diary form using extracted OCR text.
 function autoFillDiary() {
   const extractedText = document.getElementById("extractedText").innerText;
   if (!extractedText || extractedText === "Processing OCR..." || extractedText === "Error extracting text.") {
@@ -57,10 +56,13 @@ function autoFillDiary() {
   }
   const homeworkData = autoClassifyHomework(extractedText);
   fillReviewForm(homeworkData);
+  // Hide the OCR dialog after auto-fill.
+  document.getElementById("ocrDialog").classList.add("hidden");
   alert("Diary form auto-filled. Please review and adjust as needed.");
 }
 
-// Basic auto-classification using regex (match subjects like 'Urdu:', 'English:', etc.).
+// Basic auto-classification using regex.
+// Adjust the regex as needed for your image content.
 function autoClassifyHomework(text) {
   const subjects = {
     "Urdu": /(urdu|adab):\s*(.*)/i,
@@ -89,7 +91,7 @@ function autoClassifyHomework(text) {
   return homework;
 }
 
-// Fill the diary form with the classified homework data.
+// Fill the diary form with classified data.
 function fillReviewForm(homeworkData) {
   document.getElementById("urduHomework").value = homeworkData["Urdu"];
   document.getElementById("englishHomework").value = homeworkData["English"];
@@ -98,7 +100,7 @@ function fillReviewForm(homeworkData) {
   document.getElementById("socialHomework").value = homeworkData["Social Studies"];
 }
 
-// Update the preview section with diary form data in a standard vertical layout.
+// Update preview: generate a colorful, traditional diary style preview.
 function updatePreview() {
   const date = document.getElementById("diaryDate").value || "__________";
   const schoolName = document.getElementById("schoolName").value || "__________";
@@ -114,7 +116,6 @@ function updatePreview() {
   const teacherNote = document.getElementById("teacherNote").value || "_________________________________________________";
   const announcements = document.getElementById("announcements").value || "_________________________________________________";
   
-  // Build the preview in a traditional diary style.
   let previewHTML = `
     <div class="diary-header">
       <h2>${schoolName}</h2>
@@ -150,7 +151,7 @@ function updatePreview() {
   document.getElementById("previewContent").innerHTML = previewHTML;
 }
 
-// Generate a PDF using jsPDF.
+// Generate PDF using jsPDF.
 function generatePDF() {
   updatePreview();
   const { jsPDF } = window.jspdf;
