@@ -6,15 +6,8 @@ function callGoogleVisionOCR(imageBase64) {
   const requestBody = {
     requests: [
       {
-        image: {
-          content: imageBase64
-        },
-        features: [
-          {
-            type: "TEXT_DETECTION",
-            maxResults: 1
-          }
-        ]
+        image: { content: imageBase64 },
+        features: [{ type: "TEXT_DETECTION", maxResults: 1 }]
       }
     ]
   };
@@ -34,7 +27,7 @@ function callGoogleVisionOCR(imageBase64) {
   });
 }
 
-// Process image: show preview and enable scan.
+// Process image: show preview and reveal scan button.
 function processImage() {
   const imageInput = document.getElementById("imageUpload");
   if (!imageInput.files[0]) {
@@ -55,21 +48,21 @@ function processImage() {
   reader.readAsDataURL(file);
 }
 
-// Scan image: use Google Cloud Vision OCR API and display floating dialog.
+// Scan image: use Google Cloud Vision OCR API and display OCR dialog.
 function scanImage() {
   const imageDataUrl = document.getElementById("uploadedImage").src;
   if (!imageDataUrl) {
     alert("No image available to scan.");
     return;
   }
-  // Convert image data URL to Base64 string
+  // Convert image data URL to Base64 string (remove data header)
   const base64String = imageDataUrl.replace(/^data:image\/[a-z]+;base64,/, "");
-  // Show OCR dialog with processing message
+  // Show OCR dialog with initial processing message
   const ocrDialog = document.getElementById("ocrDialog");
   document.getElementById("extractedText").innerText = "Processing OCR...";
   ocrDialog.classList.remove("hidden");
 
-  // Call OCR API
+  // Call the actual OCR API
   callGoogleVisionOCR(base64String)
     .then(extractedText => {
       document.getElementById("extractedText").innerText = extractedText;
@@ -86,7 +79,7 @@ function closeOCRDialog() {
   document.getElementById("autoFillSection").classList.remove("hidden");
 }
 
-// Auto-fill the diary form based on extracted text.
+// Auto-fill the diary form from extracted OCR text.
 function autoFillDiary() {
   const extractedText = document.getElementById("extractedText").innerText;
   if (!extractedText || extractedText === "Processing OCR..." || extractedText === "Error extracting text.") {
@@ -98,7 +91,7 @@ function autoFillDiary() {
   alert("Diary form auto-filled. Please review and adjust as needed.");
 }
 
-// Basic auto-classification using regex.
+// Auto-classify extracted text using regex (matching subject labels without the word 'homework').
 function autoClassifyHomework(text) {
   const subjects = {
     "Urdu": /(urdu|adab):\s*(.*)/i,
@@ -127,7 +120,7 @@ function autoClassifyHomework(text) {
   return homework;
 }
 
-// Fill the diary form with classified homework data.
+// Fill the diary form with auto-classified data.
 function fillReviewForm(homeworkData) {
   document.getElementById("urduHomework").value = homeworkData["Urdu"];
   document.getElementById("englishHomework").value = homeworkData["English"];
@@ -136,7 +129,7 @@ function fillReviewForm(homeworkData) {
   document.getElementById("socialHomework").value = homeworkData["Social Studies"];
 }
 
-// Update preview with diary form data in standard layout.
+// Update preview: generate a colorful, traditional diary style preview.
 function updatePreview() {
   const date = document.getElementById("diaryDate").value || "__________";
   const schoolName = document.getElementById("schoolName").value || "__________";
@@ -152,19 +145,38 @@ function updatePreview() {
   const teacherNote = document.getElementById("teacherNote").value || "_________________________________________________";
   const announcements = document.getElementById("announcements").value || "_________________________________________________";
   
-  // Build the preview in a standard (vertical) style.
+  // Build a colorful, traditional diary style preview.
   let previewHTML = `
-    <p><strong>Date:</strong> ${date}</p>
-    <p><strong>School Name:</strong> ${schoolName}</p>
-    <p><strong>Class:</strong> ${className}</p>
-    <p><strong>Student Name:</strong> ${studentName}</p>
-    <p><strong>Urdu Homework:</strong> ${urdu}</p>
-    <p><strong>English Homework:</strong> ${english}</p>
-    <p><strong>Math Homework:</strong> ${math}</p>
-    <p><strong>Science Homework:</strong> ${science}</p>
-    <p><strong>Social Studies Homework:</strong> ${social}</p>
-    <p><strong>Teacher's Note:</strong> ${teacherNote}</p>
-    <p><strong>Announcements / Alerts:</strong> ${announcements}</p>
+    <div class="diary-header">
+      <h2>${schoolName}</h2>
+      <p><strong>Date:</strong> ${date} | <strong>Class:</strong> ${className} | <strong>Student:</strong> ${studentName}</p>
+    </div>
+    <div class="diary-body">
+      <div class="diary-entry">
+        <h3>Urdu</h3>
+        <p>${urdu}</p>
+      </div>
+      <div class="diary-entry">
+        <h3>English</h3>
+        <p>${english}</p>
+      </div>
+      <div class="diary-entry">
+        <h3>Math</h3>
+        <p>${math}</p>
+      </div>
+      <div class="diary-entry">
+        <h3>Science</h3>
+        <p>${science}</p>
+      </div>
+      <div class="diary-entry">
+        <h3>Social Studies</h3>
+        <p>${social}</p>
+      </div>
+    </div>
+    <div class="diary-footer">
+      <p><strong>Teacher's Note:</strong> ${teacherNote}</p>
+      <p><strong>Announcements / Alerts:</strong> ${announcements}</p>
+    </div>
   `;
   document.getElementById("previewContent").innerHTML = previewHTML;
 }
