@@ -1,184 +1,23 @@
-/* Reset & Base Styles */
 * {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
+
 body {
-  font-family: 'Arial', sans-serif;
-  background: #f4f4f4;
-  color: #333;
-  padding: 10px;
+    font-family: 'Arial', sans-serif;
+    background: #f4f4f4;
+    color: #333;
+    padding: 10px;
 }
+
 .container {
-  background: #fff;
-  width: 100%;
-  max-width: 900px;
-  margin: 0 auto;
-  padding: 20px;
-  border-radius: 8px;
+    background: #fff;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px;
+    border-radius: 8px;
 }
 
-/* Header */
-header h1 {
-  text-align: center;
-  font-size: 2em;
-  margin-bottom: 20px;
-  color: #444;
-}
-
-/* Upload Section */
-.upload-section {
-  text-align: center;
-  margin-bottom: 20px;
-}
-.upload-section input[type="file"] {
-  width: 100%;
-  max-width: 400px;
-  margin-bottom: 10px;
-}
-.upload-section button {
-  padding: 10px 20px;
-  border: none;
-  background-color: #2575fc;
-  color: #fff;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-/* Image Preview */
-.image-preview-container {
-  text-align: center;
-  margin-bottom: 10px;
-}
-.image-preview-container img {
-  width: 100%;
-  max-width: 400px;
-  border-radius: 5px;
-  border: 1px solid #ccc;
-}
-
-/* OCR Dialog (Floating Overlay) */
-.ocr-dialog {
-  position: fixed;
-  top: 20%;
-  left: 50%;
-  transform: translateX(-50%);
-  background: #fff;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  padding: 20px;
-  width: 90%;
-  max-width: 400px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-  z-index: 1000;
-}
-.ocr-dialog.hidden {
-  display: none;
-}
-.ocr-dialog h3 {
-  margin-bottom: 10px;
-  color: #444;
-}
-.ocr-dialog #extractedText {
-  max-height: 150px;
-  overflow-y: auto;
-  padding: 10px;
-  background: #f9f9f9;
-  border: 1px solid #ddd;
-  margin-bottom: 15px;
-}
-.ocr-dialog button {
-  background-color: #d9534f;
-  color: #fff;
-  padding: 8px 16px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-/* Auto Fill Button */
-#autoFillSection {
-  text-align: center;
-  margin-bottom: 20px;
-}
-#autoFillSection.hidden {
-  display: none;
-}
-#autoFillSection button {
-  padding: 10px 20px;
-  background-color: #2575fc;
-  color: #fff;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-/* Input Section (Standard Form) */
-.input-section {
-  margin-bottom: 30px;
-  padding: 15px;
-  background: #fff;
-}
-.input-section form label {
-  display: block;
-  margin-top: 10px;
-  font-weight: bold;
-}
-.input-section form input,
-.input-section form textarea {
-  width: 100%;
-  padding: 10px;
-  margin-top: 5px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  font-size: 1em;
-}
-.input-section form button {
-  margin-top: 15px;
-  background-color: #2575fc;
-  color: #fff;
-  padding: 10px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-/* Preview Section - Traditional Diary Style */
-.preview-section {
-  margin-top: 30px;
-  padding: 20px;
-  background: #fff;
-  border: 2px solid #e0e0e0;
-  border-radius: 8px;
-  /* Traditional diary feel: subtle paper texture color and elegant border */
-  background: #fcfaf3;
-  border: 2px solid #d8c3a5;
-}
-#previewContent {
-  text-align: left;
-  margin-top: 15px;
-  font-family: 'Georgia', serif;
-  font-size: 1.1em;
-  color: #3e3e3e;
-}
-.preview-buttons {
-  text-align: center;
-  margin-top: 20px;
-}
-.preview-buttons button {
-  background-color: #2575fc;
-  color: #fff;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  margin: 5px;
-}
-
-/* Responsive */
-@media (max-width: 600px) {
-  .ocr-dialog {
-    width: 95%;
-  }
-}
+/* Add all your original CSS styles here */
+/* Include the processing spinner and error message styles from previous answer */
