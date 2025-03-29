@@ -1,33 +1,4 @@
-// Call Google Cloud Vision OCR API
-function callGoogleVisionOCR(imageBase64) {
-  const apiKey = "YOUR_API_KEY"; // Replace with your actual API key
-  const url = `https://vision.googleapis.com/v1/images:annotate?key=${apiKey}`;
-
-  const requestBody = {
-    requests: [
-      {
-        image: { content: imageBase64 },
-        features: [{ type: "TEXT_DETECTION", maxResults: 1 }]
-      }
-    ]
-  };
-
-  return fetch(url, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(requestBody)
-  })
-  .then(response => response.json())
-  .then(data => {
-    if (data.responses && data.responses[0].fullTextAnnotation) {
-      return data.responses[0].fullTextAnnotation.text;
-    } else {
-      throw new Error("No text detected");
-    }
-  });
-}
-
-// Process image: show preview and reveal scan button.
+// Process image: show preview and enable the scan button.
 function processImage() {
   const imageInput = document.getElementById("imageUpload");
   if (!imageInput.files[0]) {
@@ -48,24 +19,22 @@ function processImage() {
   reader.readAsDataURL(file);
 }
 
-// Scan image: use Google Cloud Vision OCR API and display OCR dialog.
+// Scan image using Tesseract.js for OCR.
 function scanImage() {
   const imageDataUrl = document.getElementById("uploadedImage").src;
   if (!imageDataUrl) {
     alert("No image available to scan.");
     return;
   }
-  // Convert image data URL to Base64 string (remove data header)
-  const base64String = imageDataUrl.replace(/^data:image\/[a-z]+;base64,/, "");
-  // Show OCR dialog with initial processing message
+  // Show OCR dialog with initial processing message.
   const ocrDialog = document.getElementById("ocrDialog");
   document.getElementById("extractedText").innerText = "Processing OCR...";
   ocrDialog.classList.remove("hidden");
 
-  // Call the actual OCR API
-  callGoogleVisionOCR(base64String)
-    .then(extractedText => {
-      document.getElementById("extractedText").innerText = extractedText;
+  // Use Tesseract.js to extract text.
+  Tesseract.recognize(imageDataUrl, 'eng', { logger: m => console.log(m) })
+    .then(({ data: { text } }) => {
+      document.getElementById("extractedText").innerText = text;
     })
     .catch(err => {
       console.error("OCR error:", err);
@@ -79,7 +48,7 @@ function closeOCRDialog() {
   document.getElementById("autoFillSection").classList.remove("hidden");
 }
 
-// Auto-fill the diary form from extracted OCR text.
+// Auto-fill the diary form from the extracted OCR text.
 function autoFillDiary() {
   const extractedText = document.getElementById("extractedText").innerText;
   if (!extractedText || extractedText === "Processing OCR..." || extractedText === "Error extracting text.") {
@@ -91,7 +60,7 @@ function autoFillDiary() {
   alert("Diary form auto-filled. Please review and adjust as needed.");
 }
 
-// Auto-classify extracted text using regex (matching subject labels without the word 'homework').
+// Basic auto-classification using regex (match subjects like 'Urdu:', 'English:', etc.).
 function autoClassifyHomework(text) {
   const subjects = {
     "Urdu": /(urdu|adab):\s*(.*)/i,
@@ -120,7 +89,7 @@ function autoClassifyHomework(text) {
   return homework;
 }
 
-// Fill the diary form with auto-classified data.
+// Fill the diary form with the classified homework data.
 function fillReviewForm(homeworkData) {
   document.getElementById("urduHomework").value = homeworkData["Urdu"];
   document.getElementById("englishHomework").value = homeworkData["English"];
@@ -129,7 +98,7 @@ function fillReviewForm(homeworkData) {
   document.getElementById("socialHomework").value = homeworkData["Social Studies"];
 }
 
-// Update preview: generate a colorful, traditional diary style preview.
+// Update the preview section with diary form data in a standard vertical layout.
 function updatePreview() {
   const date = document.getElementById("diaryDate").value || "__________";
   const schoolName = document.getElementById("schoolName").value || "__________";
@@ -145,7 +114,7 @@ function updatePreview() {
   const teacherNote = document.getElementById("teacherNote").value || "_________________________________________________";
   const announcements = document.getElementById("announcements").value || "_________________________________________________";
   
-  // Build a colorful, traditional diary style preview.
+  // Build the preview in a traditional diary style.
   let previewHTML = `
     <div class="diary-header">
       <h2>${schoolName}</h2>
@@ -181,7 +150,7 @@ function updatePreview() {
   document.getElementById("previewContent").innerHTML = previewHTML;
 }
 
-// Generate PDF using jsPDF.
+// Generate a PDF using jsPDF.
 function generatePDF() {
   updatePreview();
   const { jsPDF } = window.jspdf;
