@@ -1,4 +1,15 @@
-// Process image using Tesseract.js, then display image and extracted text preview.
+// Dummy OCR simulation function (replace with actual API integration as needed)
+function simulateOCR(imageData) {
+  return new Promise((resolve) => {
+    // Simulate a delay for OCR processing
+    setTimeout(() => {
+      // For demonstration, return dummy extracted text.
+      resolve("Urdu: پڑھائی کا کام\nEnglish: Write an essay on Nature\nMath: Solve exercise 5.2\nScience: Read chapter 3\nSocial Studies: Prepare notes on history");
+    }, 2000);
+  });
+}
+
+// Process image: show preview and start OCR simulation.
 function processImage() {
   const imageInput = document.getElementById("imageUpload");
   if (!imageInput.files[0]) {
@@ -8,46 +19,62 @@ function processImage() {
   const file = imageInput.files[0];
   const reader = new FileReader();
   
-  // Display image preview immediately.
   reader.onload = function () {
+    // Show image preview
     document.getElementById("uploadedImage").src = reader.result;
-    // Show the OCR Preview section.
-    document.getElementById("ocrPreviewSection").classList.remove("hidden");
-    
-    // Begin OCR processing.
-    Tesseract.recognize(reader.result, 'eng', { logger: m => console.log(m) })
-      .then(({ data: { text } }) => {
-        // Update the extracted text preview.
-        document.getElementById("extractedTextPreview").innerText = text;
-      })
-      .catch(err => {
-        console.error("OCR error:", err);
-        document.getElementById("extractedTextPreview").innerText = "Error extracting text.";
-      });
+    document.getElementById("imagePreviewContainer").classList.remove("hidden");
+    // Show "Scan Image" button
+    document.getElementById("scanButton").classList.remove("hidden");
   };
   reader.readAsDataURL(file);
 }
 
-// Auto-classify extracted text and fill the diary form.
-function autoFillFromOCR() {
-  const extractedText = document.getElementById("extractedTextPreview").innerText;
-  if (!extractedText || extractedText.trim() === "") {
+// Scan image: simulate OCR extraction and display floating dialog.
+function scanImage() {
+  const imageData = document.getElementById("uploadedImage").src;
+  if (!imageData) {
+    alert("No image to scan.");
+    return;
+  }
+  // Show dialog with "Processing..." initially.
+  const ocrDialog = document.getElementById("ocrDialog");
+  const extractedTextDiv = document.getElementById("extractedText");
+  extractedTextDiv.innerText = "Processing OCR...";
+  ocrDialog.classList.remove("hidden");
+  
+  // Call the dummy OCR simulation function.
+  simulateOCR(imageData).then(extractedText => {
+    extractedTextDiv.innerText = extractedText;
+  });
+}
+
+// Close the OCR dialog.
+function closeOCRDialog() {
+  document.getElementById("ocrDialog").classList.add("hidden");
+  // Reveal the Auto Fill Diary button.
+  document.getElementById("autoFillSection").classList.remove("hidden");
+}
+
+// Auto-fill the diary form using extracted OCR text.
+function autoFillDiary() {
+  const extractedText = document.getElementById("extractedText").innerText;
+  if (!extractedText || extractedText === "Processing OCR...") {
     alert("No extracted text available.");
     return;
   }
   const homeworkData = autoClassifyHomework(extractedText);
   fillReviewForm(homeworkData);
-  alert("Form auto-filled from OCR text. Please review and adjust as needed.");
+  alert("Diary form auto-filled. Please review and adjust as needed.");
 }
 
-// Auto-classify extracted text using regex (simple approach).
+// Basic auto-classification using regex.
 function autoClassifyHomework(text) {
   const subjects = {
-    "Urdu": /(urdu|adab)/i,
-    "English": /(english|essay|grammar|literature)/i,
-    "Math": /(math|algebra|geometry|calculus)/i,
-    "Science": /(science|physics|chemistry|biology)/i,
-    "Social Studies": /(social studies|history|geography)/i
+    "Urdu": /(urdu|adab):\s*(.*)/i,
+    "English": /(english|essay|grammar|literature):\s*(.*)/i,
+    "Math": /(math|algebra|geometry|calculus):\s*(.*)/i,
+    "Science": /(science|physics|chemistry|biology):\s*(.*)/i,
+    "Social Studies": /(social studies|history|geography):\s*(.*)/i
   };
   let homework = {
     "Urdu": "",
@@ -57,31 +84,19 @@ function autoClassifyHomework(text) {
     "Social Studies": ""
   };
   let lines = text.split(/\r?\n/);
-  let currentSubject = null;
   lines.forEach(line => {
     line = line.trim();
-    if (!line) return;
-    let found = false;
     for (const subject in subjects) {
-      if (subjects[subject].test(line)) {
-        currentSubject = subject;
-        let details = line.replace(subjects[subject], "").trim(" :-");
-        homework[subject] += details + " ";
-        found = true;
-        break;
+      const match = line.match(subjects[subject]);
+      if (match) {
+        homework[subject] = match[2].trim();
       }
     }
-    if (!found && currentSubject) {
-      homework[currentSubject] += line + " ";
-    }
   });
-  for (const subject in homework) {
-    homework[subject] = homework[subject].trim();
-  }
   return homework;
 }
 
-// Fill the diary form with provided homework data.
+// Fill the form with classified homework data.
 function fillReviewForm(homeworkData) {
   document.getElementById("urduHomework").value = homeworkData["Urdu"];
   document.getElementById("englishHomework").value = homeworkData["English"];
@@ -90,7 +105,7 @@ function fillReviewForm(homeworkData) {
   document.getElementById("socialHomework").value = homeworkData["Social Studies"];
 }
 
-// Update the preview section with diary form data in a traditional diary style.
+// Update preview section with diary form data in traditional layout.
 function updatePreview() {
   const date = document.getElementById("diaryDate").value || "__________";
   const schoolName = document.getElementById("schoolName").value || "__________";
@@ -143,7 +158,7 @@ function updatePreview() {
   document.getElementById("previewContent").innerHTML = previewHTML;
 }
 
-// Generate a PDF of the diary using jsPDF.
+// Generate PDF using jsPDF
 function generatePDF() {
   updatePreview();
   const { jsPDF } = window.jspdf;
@@ -153,7 +168,7 @@ function generatePDF() {
   doc.save('HomeworkDiary.pdf');
 }
 
-// Share diary content via WhatsApp.
+// Share diary via WhatsApp.
 function shareDiary() {
   const diaryText = document.getElementById("previewContent").innerText;
   if (!diaryText) {
